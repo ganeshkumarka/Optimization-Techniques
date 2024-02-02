@@ -7,22 +7,18 @@
 # How many acres of each crop should the farmer plant to maximize his profit? 
 # What is the maximum profit? Implement using linear programming package
 
-
 from scipy.optimize import linprog
 
-c = [-5, -3] 
-A = [[2, 1], [1, 1]] 
-b = [500, 400] 
+obj = [-200, -150] #values for profit function
+#constraints
+#20*wheat+ 10 * barley <= 1200 (fertilizer constraint)
+#10 *wheat + 15*barley <= 600 (insecticide constraint)
 
-x0_bounds = (100, None) 
-x1_bounds = (50, None) 
-
-result = linprog(c, A_ub=A, b_ub=b, bounds=[x0_bounds, x1_bounds], method='highs')
-
-num_chocolate_cakes = round(result.x[0])
-num_vanilla_cakes = round(result.x[1])
-max_revenue = -result.fun
-
-print(f"Number of chocolate cakes to make: {num_chocolate_cakes}")
-print(f"Number of vanilla cakes to make: {num_vanilla_cakes}")
-print(f"Maximum revenue: ${max_revenue}")
+lhs_ineq = [[20, 10], [10, 15]] 
+rhs_ineq =[1200, 600] 
+bnd = [(20, 60),(10, 60)] 
+opt = linprog(c=obj, A_ub=lhs_ineq, b_ub=rhs_ineq, bounds=bnd) 
+print("Wheat acres",int(opt.x[0]))
+print("Barley acres",int(opt.x[1]))
+max_profit=sum(c * -x for c, x in zip(obj, opt.x))
+print("Maximum profit =",max_profit)
