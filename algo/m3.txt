@@ -1,0 +1,23 @@
+function solveTransportationProblemVAM(supply, demand, costs):
+    // Initialize variables
+    initialize transportation plan as a matrix of zeros with dimensions (len(supply), len(demand))
+    initialize remaining supply array as a copy of the supply array
+    initialize remaining demand array as a copy of the demand array
+    
+    // Step 1: Calculate the Penalty Matrix using Vogel's Approximation Method
+    initialize penalty matrix as a matrix of zeros with dimensions (len(supply), len(demand))
+    for each row i in the transportation cost matrix:
+        find the two lowest transportation costs (min1, min2) and their respective column indices (j1, j2)
+        calculate the penalty for row i as abs(min1 - min2)
+        update the penalty matrix with the calculated penalty
+    
+    // Step 2: Find the cell with the highest penalty in the penalty matrix
+    while there are unfulfilled supply or demand:
+        find the cell (i, j) with the highest penalty in the penalty matrix
+        determine the amount to be transported from this cell based on remaining supply and demand
+        update the transportation plan matrix with this amount
+        update the remaining supply and demand arrays accordingly
+        recalculate the penalty matrix for the updated transportation plan
+    
+    // Step 3: Return the optimal transportation plan
+    return transportation plan

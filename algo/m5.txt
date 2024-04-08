@@ -1,0 +1,36 @@
+function tspNearestNeighbor(dist_matrix):
+    num_cities = dist_matrix.rows()  // Assuming dist_matrix is a square matrix
+    
+    // Initialize an empty tour
+    tour = []
+    
+    // Start at a random city
+    current_city = randomCity()
+    tour.append(current_city)
+    
+    // Visit each city exactly once
+    while len(tour) < num_cities:
+        // Find the nearest neighbor to the current city
+        nearest_neighbor = findNearestNeighbor(current_city, dist_matrix, tour)
+        
+        // Move to the nearest neighbor
+        current_city = nearest_neighbor
+        tour.append(current_city)
+    
+    // Complete the tour by returning to the starting city
+    tour.append(tour[0])
+    
+    return tour
+
+function findNearestNeighbor(city, dist_matrix, visited_cities):
+    nearest_distance = infinity
+    nearest_neighbor = None
+    
+    for each unvisited_city in dist_matrix.rows():
+        if unvisited_city not in visited_cities:
+            distance_to_city = dist_matrix[city][unvisited_city]
+            if distance_to_city < nearest_distance:
+                nearest_distance = distance_to_city
+                nearest_neighbor = unvisited_city
+    
+    return nearest_neighbor

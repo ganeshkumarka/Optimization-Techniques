@@ -1,0 +1,38 @@
+function CPM(task_durations, dependencies):
+    num_tasks = length(task_durations)
+    
+    // Step 1: Forward Pass to calculate earliest start time (ES) and earliest finish time (EF)
+    ES = array of size num_tasks initialized to zeros
+    EF = array of size num_tasks initialized to zeros
+    
+    for each task in range(num_tasks):
+        if task has no dependencies:
+            ES[task] = 0
+            EF[task] = task_durations[task]
+        else:
+            max_dependency_ef = max(EF[dependency] for dependency in dependencies[task])
+            ES[task] = max_dependency_ef
+            EF[task] = max_dependency_ef + task_durations[task]
+    
+    // Step 2: Backward Pass to calculate latest start time (LS) and latest finish time (LF)
+    LF = array of size num_tasks initialized to zeros
+    LS = array of size num_tasks initialized to zeros
+    
+    LF[num_tasks - 1] = EF[num_tasks - 1]  // Set LF for the last task to its EF
+    
+    for each task in reversed(range(num_tasks - 1)):
+        LF[task] = min(LF[successor] for successor in dependencies[task])
+        LS[task] = LF[task] - task_durations[task]
+    
+    // Step 3: Calculate slack for each task
+    slack = array of size num_tasks initialized to zeros
+    for each task in range(num_tasks):
+        slack[task] = LF[task] - EF[task]
+    
+    // Step 4: Identify critical path
+    critical_path = list of tasks with zero slack
+    
+    // Step 5: Calculate project completion time
+    project_completion_time = max(EF)
+    
+    return critical_path, project_completion_time, ES, EF, LS, LF, slack

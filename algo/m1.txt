@@ -1,0 +1,35 @@
+simplex
+
+function simplex_method(c, A, b, maximize):
+    n <- number of variables
+    m <- number of constraints
+
+    if maximize:
+        negate the coefficients of the objective function c
+
+    add slack variables to convert inequalities to equalities:
+    A <- [A | I_m]
+
+    create an initial tableau:
+    tableau <- [A | b]
+
+    while there exists a negative coefficient in the objective row do:
+        select the pivot column:
+        pivot_column <- find_column_with_negative_coefficient(tableau[0])
+
+        if no such column exists:
+            return "Unbounded" if maximize else "Infeasible"
+
+        select the pivot row using the minimum ratio test:
+        pivot_row <- find_row_with_minimum_ratio(tableau, pivot_column)
+
+        update the pivot element to make it 1 and perform pivot operations:
+        tableau[pivot_row] <- tableau[pivot_row] / tableau[pivot_row][pivot_column]
+        for each row i != pivot_row do:
+            tableau[i] <- tableau[i] - tableau[pivot_row] * tableau[i][pivot_column]
+
+    extract the optimal solution and objective value from the final tableau:
+    optimal_solution <- tableau[:, -1]
+    optimal_value <- -tableau[0][-1] if maximize else tableau[0][-1]
+
+    return optimal_solution, optimal_value

@@ -1,0 +1,18 @@
+function hungarianAlgorithm(cost_matrix):
+    // Step 1: Reduce the cost matrix
+    reduceRows(cost_matrix)
+    reduceColumns(cost_matrix)
+    
+    // Step 2: Find the minimum number of lines to cover all zeros
+    while (numLines < n):
+        markZeros(cost_matrix)
+        coverZeros(cost_matrix)
+        numLines = countLines()
+        if (numLines < n):
+            adjustCostMatrix(cost_matrix)
+    
+    // Step 3: Create the maximum number of assignments
+    assignments = findAssignments(cost_matrix)
+    
+    // Step 4: Return the optimal assignment
+    return assignments

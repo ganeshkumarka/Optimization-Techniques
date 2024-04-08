@@ -1,0 +1,32 @@
+function branch_and_bound(integer_linear_programming_problem):
+    // Step 1: Initialize an empty priority queue (min heap)
+    priority_queue = empty priority queue
+    
+    // Step 2: Initialize a node representing the root of the search tree
+    root_node = create_node(integer_linear_programming_problem)
+    root_node.upper_bound = +∞  // Initialize the upper bound of the root node to positive infinity
+    
+    // Step 3: Add the root node to the priority queue
+    priority_queue.push(root_node)
+    
+    // Step 4: Repeat until the priority queue is empty
+    while priority_queue is not empty:
+        // Step 5: Pop the node with the lowest upper bound from the priority queue
+        current_node = priority_queue.pop()
+        
+        // Step 6: If the node is a leaf node, update the best solution if necessary
+        if current_node.is_leaf_node():
+            update_best_solution(current_node)
+        
+        // Step 7: If the node's lower bound is less than the current best solution, proceed
+        if current_node.lower_bound < best_solution:
+            // Step 8: Branch on the variable with the largest fractional part
+            branch_variable = select_branch_variable(current_node)
+            branch_nodes = branch_on_variable(current_node, branch_variable)
+            
+            // Step 9: Add branch nodes to the priority queue
+            for each branch_node in branch_nodes:
+                priority_queue.push(branch_node)
+    
+    // Step 10: Return the best solution found
+    return best_solution
